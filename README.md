@@ -30,7 +30,7 @@ It is managed, your all clones free BTC spinner app and make manageable conditio
 
   [5] VPN Cline pro. For highestSpinRate(https://www.freeopenvpn.org/logpass/usa.php) <a href="https://play.google.com/store/apps/details?id=it.colucciweb.vpnclient&hl=en_US" target="_blank"><span style="color: blue">https://play.google.com/store/apps/details?id=it.colucciweb.vpnclient&hl=en_US</span></a>
 
-- (Recommended) Use modded adds free version above apps. (Or check Target app folder)
+- (Recommended) Use modded adds free version above apps. (Or check <a href="https://github.com/biplobsd/Terget-app-B_n-" target="_blank"><span style="color: blue">https://github.com/biplobsd/Terget-app-B_n-</span></a> )
 
 ### How to Install and Run
 ... if anyone request.

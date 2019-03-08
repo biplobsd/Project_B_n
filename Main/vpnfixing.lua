@@ -7,27 +7,21 @@
 --alpha build
 -- ========== Settings ================
 
+-- Timer
+timerVpnfixing = Timer();
+timerVpnfixing:set()
 
 -- environment setup
 dir = scriptPath();
 setImagePath(dir .. "image")
 
--- Region config
-connectingC = Region(420, 317, 69, 35)
-vpnClientProC = Region(210, 130, 128, 57)
-chromeC = Region(979, 119, 36, 75)
-chromePlus = Region(54, 129, 59, 53)
-webchromeH = Region(389, 745, 48, 37)
-chromeLoading = Region(27, 237, 0, 0)
-chromeAddressBar = Region(129, 127, 613, 71)
-numberchecking = Region(24, 270, 226, 38)
-chromeDownloadAgain = Region(47, 1551, 73, 71)
-sciweaversProg = Region(300, 713, 56, 56)
-downloadtextfile = Region(88, 594, 51, 54)
-ducumentsReg = Region(849, 1450, 86, 81)
-tabswichingshort = Region(67, 281, 89, 1285)
-
 -- ========== Function ================
+function Endscript()
+    if timerVpnfixing:check() >= 900 then
+        scriptExit("Time is up. \nRuntime: " .. timer2:check()/60 .. " minutes")
+    end
+end
+
 function VConnectedC()
     if connectingC:exists(Pattern("homeConnected.png"), 0) then
         toast("Connected")
@@ -67,11 +61,16 @@ function chromeLoadingbar()
 end
 
 function pinrequc()
+    Endscript()
     if chromeAddressBar:exists(Pattern("freeopenvpn.org.png"), 0) then
         swipe(Location(525, 539), Location(525, 1183))
         chromeLoadingbar()
-        longClick(Location(266, 1045), 1)
-        existsClick(Pattern("downIMG.png"), 2)
+        if cepbepy:exists(Pattern("cepbepyimg.png"), 0) then
+            longClick(Location(266, 1045), 1)
+        else
+            longClick(Location(311, 876), 1)
+        end
+        chromeDownloadImg:existsClick(Pattern("downIMG.png"), 2)
         if chromeDownloadAgain:exists(Pattern("downloadAgain.png"), 0) then
             click(Location(873, 1817))
         end
@@ -84,7 +83,7 @@ function pinrequc()
         wait(1)
         click(Location(136, 406))
         wait(0.2)
-        click(Location(887, 1493))
+        ducumentsReg:existsClick(Pattern("documentMe.png"), 2)
         wait(0.2)
         click(Location(373, 335))
         wait(0.2)
@@ -180,7 +179,8 @@ function addingAddressbar()
 end
 
 function maindo()
-    while true do 
+    while true do
+        Endscript() 
         -- VpnClientPro
         while not vpnClientProC:exists(Pattern("appVPNCproC.png"), 0) do
             startApp("it.colucciweb.vpnclient")
@@ -227,7 +227,7 @@ function maindo()
         --]]
         -- Main Trying
         pinrequc()
-
+        if pinnumber == nil then maindo() end
         while not vpnClientProC:exists(Pattern("appVPNCproC.png"), 0) do
             startApp("it.colucciweb.vpnclient")
             wait(3)

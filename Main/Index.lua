@@ -7,59 +7,16 @@ Settings:setScriptDimension(true, 1080)
 
 -- environment setup
 dir = scriptPath();
+package.path = package.path .. ';'..dir..'?.lua'
 setImagePath(dir .. "image")
-
--- Region config
--- BTC spinner
-LCheck = Region(228, 93, 207, 87)
-wlc = Region(229, 1273, 455, 285)
-spin = Region(762, 1709, 62, 22)
-conE = Region(415, 771, 219, 93)
-findspintre = Region(145, 581, 69, 79)
-verifybtcapp = Region(896, 69, 128,132)
-applist = Region(129, 437, 857, 1153)
-rp1 = Region(643, 261, 97, 81)
-rpc2 = Region(547, 292, 232, 47)
-last_app = Region(420, 1318, 106, 59)
-waitf = Region(277,1313, 373, 209)
-LCheck = Region(228, 93, 207, 87)
-offer1 = Region(137, 495, 45, 57)
-spin = Region(692, 1680, 130, 51)
-spinColG = Region(811, 1690, 0, 0)
-waitColG = Region(806, 1691, 0, 0)
-lerrorR = Region(595, 845, 183, 75)
-climeS = Region(286, 807, 284, 64)
-climeC = Region(131, 755, 171, 71)
-climeSuc = Region(297, 793, 259, 57)
-PleWait = Region(163, 763, 757, 99)
-verifybtcapp = Region(896, 69, 128,132)
-lowPowerD = Region(273, 122, 0, 0)
-
--- Via app
-homeBTCwA = Region(35, 419, 525, 95)
-waitX = Region(976, 95, 83, 75)
-topCoinBase = Region(115, 105, 247, 65)
-verifyBTCw = Region(487, 465, 111, 111)
-sendN = Region(189, 831, 197, 75)
-sendNC = Region(189, 831, 0, 0)
-sendBtc = Region(56, 247, 270, 66)
-sendBtcE = Region(348, 758, 147, 60)
-amount = Region(61, 645, 179, 63)
-conticol = Region(512, 1584, 0, 0)
-conticol2 = Region(711, 1489, 0, 0)
-transD = Region(55, 413, 395, 65)
-verifyviaapp = Region(497, 1821, 85, 79)
-rp = Region(317, 303, 443, 77)
-homeforWC = Region(166, 446, 0, 0)
-rp1 = Region(643, 261, 97, 81)
-
--- Vpn Fixing
-PinRequT = Region(269, 563, 69, 51)
+require 'Region'
+require 'Ids'
 
 -- Some setting
 timer2 = Timer();
 saveBartilvl = batteryLevel()
 -- User Interface
+preferencePutNumber("Nnew", #appPackesNameBTC)
 dialogInit()
 addSeparator()
 addSeparator()
@@ -68,7 +25,11 @@ addCheckBox("rsValue", "\tReset all value and create logfile", false)
 newRow()
 addCheckBox("vpnfixingS", "\tLet me Connected vpn.", false)
 newRow()
+addCheckBox("advnce", "\tAdvence app picter.", false)
+newRow()
 addCheckBox("ClimeNow", "\tSet Clime Now after spin complated", false)
+newRow()
+addCheckBox("climeNowOnly", "\tSet only Clime Now.", false)
 newRow()
 addCheckBox("offer", "\tSet Offer Check", false)
 newRow()
@@ -99,18 +60,27 @@ if (brNess) then
 	setBrightness(0)
 end
 if (modeChange == 2) then
-	preferencePutNumber("Nnew", 35)
+	preferencePutNumber("Nnew", #appPackesNameVia)
+	preferencePutBoolean("vpnfixingS", false)
 	dialogInit()
+	addSeparator()
+	addSeparator()
+	newRow()
+	addCheckBox("advnce", "\tAdvence app picter.", false)
 	newRow()
 	addCheckBox("rsValue", " Reset all value and create logfile", false)
+	addSeparator()
 	newRow()
-	addTextView("Input your Gmail: ")
+	addTextView("\tInput your Gmail: ")
 	addEditText("emailInit", "biplobsd11@gmail.com")
 	newRow()
-	addTextView("Your total app ")
+	addTextView("\tYour total app ")
 	addEditNumber("Nnew", 2)
 	dialogShow("Setup")
 	toast("Your email: "..emailInit.."\nYour total apps: "..Nnew)
+	appPackesName = appPackesNameVia
+else 
+	appPackesName = appPackesNameBTC
 end
 toast(Nnew)
 timerSET = timerSET * 60
@@ -176,6 +146,14 @@ version = "\n\nv1.2"
 -- result = httpPost("http://my-json-server.typicode.com/biplobsd/datainput/posts", params)
 -- print (result)
 -- ========== Function ================
+function vpnPasswordRequ()
+	if (vpnfixingS) then
+		if passwordRequP:existsClick(Pattern("disconnectimg.png"), 0.1) then
+			dofile(dir .. "vpnfixing.lua")
+		end
+	end
+end
+
 function savebattery()
 	if saveBartilvl > batteryLevel() then
 		batterylvls = batteryLevel() - saveBartilvl
@@ -184,7 +162,7 @@ function savebattery()
 		batterylvls = batteryLevel() - saveBartilvl
 		preferencePutNumber("batteryinfopast", batterylvls)
 	elseif 15 >= batteryLevel() then
-		return scriptExit("Battery is low, less then 10%. \nRuntime: " .. timer2:check()/60 .. " minutes")
+		return scriptExit("Battery is low, less then 15%. \nRuntime: " .. timer2:check()/60 .. " minutes")
 	else
 		preferencePutNumber("batteryinfopast", 0)
 	end
@@ -229,11 +207,27 @@ function swipeMod(n)
 		end
 	end
 end
+
+function advacesAppPic(op)
+	sop = 0
+	-- op = #appPackesName - op
+	toast(op)
+	whoisapp = op
+	while not waitf:exists(Pattern("Wel_W.png"), 0) and sop <= 10 do 
+		startApp(appPackesName[op])
+		sop = sop + 1
+	end
+end
+
 function picapp(a, n)
 	if a == "0" and skp == 0 then
-		swipeMod(n)
 		toast(n .. " app are not complated")
-		click(picappL(n))
+		if (advnce) then
+			advacesAppPic(n)
+		else
+			swipeMod(n)
+			click(picappL(n))
+		end
 		a = 1
 		skp = 1
 	end
@@ -275,10 +269,14 @@ while true do
 	if (oneTime == false) or waitf:exists(Pattern("Wel_W.png"), 0) or verifyviaapp:exists(Pattern("verifyViaappW.png"), 0) or verifyviaapp:exists(Pattern("verifyViaapp.png"), 0) then
 		wait(1)
 		toast("App switch")
-		keyevent(187)
-		swipe(Location(450, 1000), Location(0,1000))
-		click(Location(513, 289))
-		wait(0.1)
+		if (advnce) then
+			killApp(appPackesName[whoisapp])
+		else
+			keyevent(187)
+			swipe(Location(450, 1000), Location(0,1000))
+			click(Location(513, 289))
+			wait(0.1)
+		end
 
 		-- Save logs
 		if (modeChange == 1) then
@@ -302,12 +300,7 @@ while true do
 
 		    -- Vpn Fixing
 -----------------
-	if (vpnfixingS) then
-		if PinRequT:exists(Pattern("popupPin.png"), 0) then
-			click(Location(287, 879))
-			dofile(dir .. "vpnfixing.lua")
-		end
-	end
+	vpnPasswordRequ()
 
 	dofile(dir .. "appPlist.lua")
 

@@ -16,62 +16,51 @@ while waitf:exists(Pattern("Wel_W.png"), 0) do
 end
     -- Vpn Fixing
 -----------------
-if (vpnfixingS) then
-    if PinRequT:exists(Pattern("popupPin.png"), 0) then
-        click(Location(287, 879))
-        dofile(dir .. "vpnfixing.lua")
-    end
-end
+vpnPasswordRequ()
 
 vpnfixnow = false
 lowPD = {getColor(lowPowerD, 0)}
 spinC = {getColor(spinColG, 0)}
-while (lowPD[1] == 102 or lowPD[1] == 254) do
-
-    -- Vpn Fixing
------------------
-    if (vpnfixingS) then
-        if PinRequT:exists(Pattern("popupPin.png"), 0) then
-            click(Location(287, 879))
-            dofile(dir .. "vpnfixing.lua")
+if not (climeNowOnly) then
+    while (lowPD[1] == 102 or lowPD[1] == 254) do
+        -- Vpn Fixing
+    -----------------
+        vpnPasswordRequ()
+        -- Offer Check
+    -----------------
+        if (offer) and offers == 0 then
+            if offer1:exists(Pattern("of_1.png"), 0) then
+                toast("Offer found")
+                click(Location(325, 1405))
+                offers = 1
+            end
         end
-    end
-
-    -- Offer Check
------------------
-    if (offer) and offers == 0 then
-         if offer1:exists(Pattern("of_1.png"), 0) then
-            toast("Offer found")
-            click(Location(325, 1405))
-            offers = 1
+    
+        -- Location error Check
+    -----------------
+        if (lerrorC) then
+            if lerrorR:exists(Pattern("Lerror.png"), 2) then
+                vpnfixnow = true
+                break
+            end
         end
-    end
 
-    -- Location error Check
------------------
-    if (lerrorC) then
-        if lerrorR:exists(Pattern("Lerror.png"), 2) then
-            vpnfixnow = true
+        -- timer end
+    -----------------
+        if timer:check() >= timerSET then
+            toast("Time is over. \nRuntime: " .. timer:check()/60 .. " minutes" .. version)
             break
         end
-    end
 
-    -- timer end
------------------
-    if timer:check() >= timerSET then
-        toast("Time is over. \nRuntime: " .. timer:check()/60 .. " minutes" .. version)
-        break
+        -- Spinning
+    -----------------
+        click(Location(752, 1704))
+        click(Location(752, 1704))
+        wait(1.5)
+        
+        lowPD = {getColor(lowPowerD, 0)}
     end
-
-    -- Spinning
------------------
-    click(Location(752, 1704))
-    click(Location(752, 1704))
-    wait(2)
-    
-    lowPD = {getColor(lowPowerD, 0)}
 end
-
 wait(0.1)
 if verifybtcapp:exists(Pattern("vRfy.png"), 0) then
     oneTime = false
@@ -79,7 +68,7 @@ end
 
         -- Clime Now
 -----------------
-if (ClimeNow) then
+if (ClimeNow) or (climeNowOnly) then
     if LCheck:exists(Pattern("Low_W.png"), 0.4) or verifybtcapp:exists(Pattern("vRfy.png"), 0) then
         toast("Try to clime Satoshi")
         click(Location(99, 136))

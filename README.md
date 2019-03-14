@@ -17,7 +17,8 @@ It is managed, your all clones free BTC spinner app and make manageable conditio
 - [x] Vpn auto connect. 
 
 ### Requirement
-- OS: Android (MIUI 10.1)
+- OS: Android : (MIUI 10.1)
+- Resolution : 1080 x 1920
 - App Needed:
 
   [1] BTC app Spinner. <a href="https://play.google.com/store/apps/details?id=me.coinspinner.app&hl=en" target="_blank"><span style="color: blue">https://play.google.com/store/apps/details?id=me.coinspinner.app&hl=en</span></a>

@@ -11,6 +11,7 @@ package.path = package.path .. ';'..dir..'?.lua'
 setImagePath(dir .. "image")
 require 'Region'
 require 'Ids'
+require 'functions'
 
 -- Some setting
 timer2 = Timer();
@@ -26,6 +27,8 @@ newRow()
 addCheckBox("vpnfixingS", "\tLet me Connected vpn.", false)
 newRow()
 addCheckBox("advnce", "\tAdvence app picter.", false)
+newRow()
+addCheckBox("reverse", "\tAdvence reverse app picter.", false)
 newRow()
 addCheckBox("ClimeNow", "\tSet Clime Now after spin complated", false)
 newRow()
@@ -56,9 +59,6 @@ addEditNumber("Nnew", 2)
 addTextView("apps")
 dialogShow("Setup")
 
-if (brNess) then
-	setBrightness(0)
-end
 if (modeChange == 2) then
 	preferencePutNumber("Nnew", #appPackesNameVia)
 	preferencePutBoolean("vpnfixingS", false)
@@ -67,6 +67,8 @@ if (modeChange == 2) then
 	addSeparator()
 	newRow()
 	addCheckBox("advnce", "\tAdvence app picter.", false)
+	newRow()
+	addCheckBox("reverse", "\tAdvence reverse app picter.", false)
 	newRow()
 	addCheckBox("rsValue", " Reset all value and create logfile", false)
 	addSeparator()
@@ -82,7 +84,10 @@ if (modeChange == 2) then
 else 
 	appPackesName = appPackesNameBTC
 end
-toast(Nnew)
+if (reverse) then
+	advnce = true
+	appPackesName = reverseTB(appPackesName)
+end
 timerSET = timerSET * 60
 lognew = {}
 if (rsValue) then
@@ -142,119 +147,24 @@ oneTime = true
 offers = 0
 version = "\n\nv1.2"
 
--- params = {id="4", title="Post 4" }
--- result = httpPost("http://my-json-server.typicode.com/biplobsd/datainput/posts", params)
--- print (result)
--- ========== Function ================
-function vpnPasswordRequ()
-	if (vpnfixingS) then
-		if passwordRequP:existsClick(Pattern("disconnectimg.png"), 0.1) then
-			dofile(dir .. "vpnfixing.lua")
-		end
-	end
-end
-
-function savebattery()
-	if saveBartilvl > batteryLevel() then
-		batterylvls = batteryLevel() - saveBartilvl
-		preferencePutNumber("batteryinfopast", batterylvls)
-	elseif saveBartilvl < batteryLevel() then
-		batterylvls = batteryLevel() - saveBartilvl
-		preferencePutNumber("batteryinfopast", batterylvls)
-	elseif 15 >= batteryLevel() then
-		return scriptExit("Battery is low, less then 15%. \nRuntime: " .. timer2:check()/60 .. " minutes")
-	else
-		preferencePutNumber("batteryinfopast", 0)
-	end
-end
-
-function testPicapp()
-	if skp == 0 then
-		brks = 1
-		while brks <= Nnew do
-			sxp = picapp(lognew[brks], brks)
-			lognew[brks] = sxp[1]
-			sxp[1] = 0
-			brks = brks + 1
-		end
-	end
-end
-
-function swipeMod(n)
-	if (oneTime) then
-		if n <= 12 then
-			conti = 0
-		else
-			conti = ((n-1)/12)
-			contino = 1
-			while contino <= conti do
-				swipe(Location(555, 1545), Location(555,798))
-				wait(2.5)
-				contino = contino + 1
-			end
-		end
-		oneTime = false
-	else
-		oneTime = false
-		if n <= 12 then
-			r = 1
-		else
-			r = (n-1)%12
-		end
-		if r == 0 then
-			swipe(Location(555, 1545), Location(555,798))
-			wait(2.5)
-		end
-	end
-end
-
-function advacesAppPic(op)
-	sop = 0
-	-- op = #appPackesName - op
-	toast(op)
-	whoisapp = op
-	while not waitf:exists(Pattern("Wel_W.png"), 0) and sop <= 10 do 
-		startApp(appPackesName[op])
-		sop = sop + 1
-	end
-end
-
-function picapp(a, n)
-	if a == "0" and skp == 0 then
-		toast(n .. " app are not complated")
-		if (advnce) then
-			advacesAppPic(n)
-		else
-			swipeMod(n)
-			click(picappL(n))
-		end
-		a = 1
-		skp = 1
-	end
-	return {a}
-end
-
-function picappL(a)
-	x = (210*(a%3)*1.3)
-	if x == 0 then
-		x = 210*3*1.3
-	end
-	if (a/4)%3 == 0 then
-		y = 275*5
-	elseif (a/4)%3 >= 0.25  and (a/4)%3 <= 0.75 then
-		y = 275*2
-	elseif (a/4)%3 >= 1.0  and (a/4)%3 <= 1.5 then
-		y = 275*3
-	elseif (a/4)%3 >= 1.75  and (a/4)%3 <= 2.25 then
-		y = 275*4
-	elseif (a/4)%3 >= 2.5  and (a/4)%3 <= 2.75 then
-		y = 275*5
-	end
-	return Location(x, y)
-end
+-- ========== Main Program ================
 
 savebattery()
--- ========== Main Program ================
+
+if (brNess) then setBrightness(0) end
+
+if (getRealScreenSize():getX() == 1080) then
+    swipe(Location(100, 40), Location(100, 300), 0.01)
+    wait(1)
+    Region(93, 291, 929, 419):existsClick(Pattern("NotificationBar2expROff.png"), 1)
+    keyevent(3)
+else
+    keyevent(3)
+	scriptExit("Screen size not perfact.")
+end
+
+
+
 if (vpnfixingS) then
 	dofile(dir .. "vpnfixing.lua")
 end

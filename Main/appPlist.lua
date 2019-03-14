@@ -1,26 +1,23 @@
-
-if rp1:exists(Pattern("App_list_n.png"), 0.5) then
-    Block_1 = true
+if (advnce) then
+    testPicapp()
+    if waitf:exists(Pattern("Wel_W.png"), 1) or verifybtcapp:exists(Pattern("vRfy.png"), 1) or verifyviaapp:exists(Pattern("verifyViaappW.png"), 1) then
+        Block_1 = true
+    else
+        Block_1 = false
+    end
 else
-    if advnce then
+    if rp1:exists(Pattern("App_list_n.png"), 0.5) then
         testPicapp()
-        if waitf:exists(Pattern("Wel_W.png"), 0) or verifybtcapp:exists(Pattern("vRfy.png"), 0) then
-            Block_1 = true
-        else
-            Block_1 = false
-        end
+        Block_1 = true
     else
         Block_1 = false
     end
 end
 
-    -- Block_1
-if (Block_1) then
-
-    testPicapp()
-    
-end
-
 if not Block_1 then
-    scriptExit("It's not btc app lists.")
+    if skp == 0 then
+        toast("Try reset ...")
+    else
+        scriptExit("It's not btc app lists.")
+    end
 end

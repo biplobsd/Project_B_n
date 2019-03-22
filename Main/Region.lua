@@ -45,7 +45,7 @@ rp1 = Region(643, 261, 97, 81)
 
 -- Vpn Fixing
 PinRequT = Region(267, 531, 77, 215)
-passwordRequP = Region(133, 981, 277, 493)
+passwordRequP = Region(129, 743, 281, 511)
 connectingC = Region(420, 317, 69, 35)
 vpnClientProC = Region(210, 130, 128, 57)
 chromeC = Region(979, 119, 36, 75)

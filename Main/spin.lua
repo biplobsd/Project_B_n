@@ -39,7 +39,7 @@ if not (climeNowOnly) then
         -- Location error Check
     -----------------
         if (lerrorC) then
-            if lerrorR:exists(Pattern("Lerror.png"), 2) then
+            if lerrorR:exists(Pattern("Lerror.png"):similar(0.5), 2) then
                 vpnfixnow = true
                 break
             end
@@ -56,8 +56,7 @@ if not (climeNowOnly) then
     -----------------
         click(Location(752, 1704))
         click(Location(752, 1704))
-        wait(1.5)
-        
+        wait(2)
         lowPD = {getColor(lowPowerD, 0)}
     end
 end

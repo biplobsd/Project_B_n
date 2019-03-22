@@ -11,7 +11,7 @@ end
 
 function vpnPasswordRequ()
 	if (vpnfixingS) then
-		if passwordRequP:existsClick(Pattern("disconnectimg.png"), 0.1) then
+		if passwordRequP:existsClick(Pattern("disconnectimg.png"):similar(0.4), 0) then
 			dofile(dir .. "vpnfixing.lua")
 		end
 	end

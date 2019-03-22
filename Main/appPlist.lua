@@ -1,6 +1,7 @@
 if (advnce) then
     testPicapp()
-    if waitf:exists(Pattern("Wel_W.png"), 1) or verifybtcapp:exists(Pattern("vRfy.png"), 1) or verifyviaapp:exists(Pattern("verifyViaappW.png"), 1) then
+    wait(2)
+    if waitf:exists(Pattern("Wel_W.png"):similar(0.5), 0) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0) or verifyviaapp:exists(Pattern("verifyViaappW.png"):similar(0.5), 0) then
         Block_1 = true
     else
         Block_1 = false

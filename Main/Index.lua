@@ -13,6 +13,8 @@ require 'Region'
 require 'Ids'
 require 'functions'
 
+
+
 -- Some setting
 timer2 = Timer();
 saveBartilvl = batteryLevel()
@@ -156,7 +158,7 @@ if (brNess) then setBrightness(0) end
 if (getRealScreenSize():getX() == 1080) then
     swipe(Location(100, 40), Location(100, 300), 0.01)
     wait(1)
-    Region(93, 291, 929, 419):existsClick(Pattern("NotificationBar2expROff.png"), 1)
+    Region(93, 291, 929, 419):existsClick(Pattern("NotificationBar2expROff.png"):similar(0.8), 0)
     keyevent(3)
 else
     keyevent(3)

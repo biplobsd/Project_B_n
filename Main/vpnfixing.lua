@@ -191,7 +191,7 @@ function maindo()
         connectingonoff()
         if VConnectedC() then break end
         -- Chrome 
-        while not chromeC:exists(Pattern("chromeChecking.png"), 0) do
+        while not chromeC:exists(Pattern("chromeChecking.png"):similar(0.3), 0) do
             startApp("com.android.chrome")
             wait(3)
             toast("Starting Chrome.")

@@ -11,6 +11,7 @@ end
 
 function vpnPasswordRequ()
 	if (vpnfixingS) then
+		unfortunatelyStoped:existsClick(Pattern("unforStoped.png"):similar(0.4), 0) -- Unfortunately Stoped error finding and click the cencel.
 		if passwordRequP:existsClick(Pattern("disconnectimg.png"):similar(0.4), 0) then
 			dofile(dir .. "vpnfixing.lua")
 		end
@@ -25,14 +26,14 @@ function savebattery()
 		batterylvls = batteryLevel() - saveBartilvl
 		preferencePutNumber("batteryinfopast", batterylvls)
 	elseif 15 >= batteryLevel() then
-		return scriptExit("Battery is low, less then 15%. \nRuntime: " .. timer2:check()/60 .. " minutes")
+		return scriptExit("Battery is low, less then 15%.")
 	else
 		preferencePutNumber("batteryinfopast", 0)
 	end
 end
 
 function testPicapp()
-	if skp == 0 then
+	if (skp) then
 		brks = 1
 		while brks <= Nnew do
 			sxp = picapp(lognew[brks], brks)
@@ -43,79 +44,86 @@ function testPicapp()
 	end
 end
 
-function swipeMod(n)
-	if (oneTime) then
-		if n <= 12 then
-			conti = 0
-		else
-			conti = ((n-1)/12)
-			contino = 1
-			while contino <= conti do
-				swipe(Location(555, 1545), Location(555,798))
-				wait(2.5)
-				contino = contino + 1
-			end
-		end
-		oneTime = false
-	else
-		oneTime = false
-		if n <= 12 then
-			r = 1
-		else
-			r = (n-1)%12
-		end
-		if r == 0 then
-			swipe(Location(555, 1545), Location(555,798))
-			wait(2.5)
-		end
-	end
-end
+-- function swipeMod(n)
+-- 	if (oneTime) then
+-- 		if n <= 12 then
+-- 			conti = 0
+-- 		else
+-- 			conti = ((n-1)/12)
+-- 			contino = 1
+-- 			while contino <= conti do
+-- 				swipe(Location(555, 1545), Location(555,798))
+-- 				wait(2.5)
+-- 				contino = contino + 1
+-- 			end
+-- 		end
+-- 		oneTime = false
+-- 	else
+-- 		oneTime = false
+-- 		if n <= 12 then
+-- 			r = 1
+-- 		else
+-- 			r = (n-1)%12
+-- 		end
+-- 		if r == 0 then
+-- 			swipe(Location(555, 1545), Location(555,798))
+-- 			wait(2.5)
+-- 		end
+-- 	end
+-- end
 
 function advacesAppPic(op)
 	sop = 0
 	-- op = #appPackesName - op
-	toast(op)
 	whoisapp = op
-	while not (waitf:exists(Pattern("Wel_W.png"), 0) or verifyviaapp:exists(Pattern("verifyViaappW.png"), 0) or verifybtcapp:exists(Pattern("vRfy.png"), 0)) and sop <= 10 do 
-		startApp(appPackesName[op])
-		sop = sop + 1
+	-- wait(2)
+	aov = startApp(appPackesName[op])
+	-- toast(startApp(appPackesName[op]))
+	-- wait(3)
+	-- while not (waitf:exists(Pattern("Wel_W.png"):similar(0.5), 0.1) or verifyviaapp:exists(Pattern("verifyViaappW.png"):similar(0.5), 0.1) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0.1)) and (sop <= 30) do 
+	-- 	startApp(appPackesName[op])
+	-- 	wait(1)
+	-- 	sop = sop + 1
+	-- end
+	toast(op)
+	-- print(op.."="..sop)
+	wait(3)
+	if (aov or waitf:exists(Pattern("Wel_W.png"):similar(0.5), 0.1) or verifyviaapp:exists(Pattern("verifyViaappW.png"):similar(0.5), 0.1) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0.1)) then
+		appOped = true
+	else
+		appOped = false
 	end
 end
 
 function picapp(a, n)
-	if a == "0" and skp == 0 then
+	if a == "0" and (skp) then
         if (reverse) then 
             toast((#appPackesName - n + 1) .. " app are not complated")
         else
             toast(n .. " app are not complated")
         end
-		if (advnce) then
-			advacesAppPic(n)
-		else
-			swipeMod(n)
-			click(picappL(n))
-		end
+		advacesAppPic(n)
 		a = 1
-		skp = 1
+		skp = false
 	end
 	return {a}
 end
 
-function picappL(a)
-	x = (210*(a%3)*1.3)
-	if x == 0 then
-		x = 210*3*1.3
-	end
-	if (a/4)%3 == 0 then
-		y = 275*5
-	elseif (a/4)%3 >= 0.25  and (a/4)%3 <= 0.75 then
-		y = 275*2
-	elseif (a/4)%3 >= 1.0  and (a/4)%3 <= 1.5 then
-		y = 275*3
-	elseif (a/4)%3 >= 1.75  and (a/4)%3 <= 2.25 then
-		y = 275*4
-	elseif (a/4)%3 >= 2.5  and (a/4)%3 <= 2.75 then
-		y = 275*5
-	end
-	return Location(x, y)
-end
+-- function picappL(a)
+-- 	x = (210*(a%3)*1.3)
+-- 	if x == 0 then
+-- 		x = 210*3*1.3
+-- 	end
+-- 	if (a/4)%3 == 0 then
+-- 		y = 275*5
+-- 	elseif (a/4)%3 >= 0.25  and (a/4)%3 <= 0.75 then
+-- 		y = 275*2
+-- 	elseif (a/4)%3 >= 1.0  and (a/4)%3 <= 1.5 then
+-- 		y = 275*3
+-- 	elseif (a/4)%3 >= 1.75  and (a/4)%3 <= 2.25 then
+-- 		y = 275*4
+-- 	elseif (a/4)%3 >= 2.5  and (a/4)%3 <= 2.75 then
+-- 		y = 275*5
+-- 	end
+-- 	return Location(x, y)
+-- end

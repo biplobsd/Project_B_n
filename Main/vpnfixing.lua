@@ -11,10 +11,6 @@
 timerVpnfixing = Timer();
 timerVpnfixing:set()
 
--- environment setup
-dir = scriptPath();
-setImagePath(dir .. "image")
-
 -- ========== Function ================
 function Endscript()
     if timerVpnfixing:check() >= 900 then
@@ -23,7 +19,7 @@ function Endscript()
 end
 
 function VConnectedC()
-    if connectingC:exists(Pattern("homeConnected.png"), 0) then
+    if connectingC:exists(Pattern("homeConnected.png"), 1) then
         toast("Connected")
         return true
     end
@@ -41,7 +37,6 @@ end
 function chromeLoadingbar()
     waitPbar = 0
     while true do
-        toast("debug")
         chromeloadingCo = {getColor(chromeLoading, 0)}
         while (chromeloadingCo[3] == 232) and 20 >= waitPbar do
             wait(0.5)
@@ -146,7 +141,7 @@ function connectingonoff()
         wait(0.2)
         lCon = 0
         while connectingC:exists(Pattern("homeConnecting.png"), 0) and 20 >= lCon do
-            wait(1)
+            wait(3)
             if VConnectedC() then break end
             lCon = lCon + 1
         end
@@ -182,7 +177,7 @@ function maindo()
     while true do
         Endscript() 
         -- VpnClientPro
-        while not vpnClientProC:exists(Pattern("appVPNCproC.png"), 0) do
+        while not vpnClientProC:exists(Pattern("appVPNCproC.png"):similar(0.5), 0) do
             startApp("it.colucciweb.vpnclient")
             wait(3)
             toast("Starting Vpn Client Pro.")

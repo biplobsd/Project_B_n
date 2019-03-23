@@ -1,26 +1,32 @@
 
 timer = Timer();
 -- ========== Main Program ================
+wait(2)
 timer:set()
-
+waitfC = {getColor(waitForApp, 1)}
+-- toast("waitfC[3] = "..waitfC[3])
     -- Wait for app opening
 -----------------
-while waitf:exists(Pattern("Wel_W.png"), 0) do 
-    wait(3)
+-- or waitf:exists(Pattern("Wel_W.png"):similar(0.2), 0.4)
+while waitfC[3] == 217 or waitfC[3] == 84 do 
+    wait(2)
     toast("Wait " .. timer:check() .. " sec")
     if timer:check() >= timerSET then
         toast("Internet problem.")
         savebattery()
         break
     end
+    waitfC = {getColor(waitForApp, 1)}
+    -- toast("waitfC[3] = "..waitfC[3])
 end
+print(whoisapp.."="..bugs..","..waitfC[3])
     -- Vpn Fixing
 -----------------
 vpnPasswordRequ()
-
+wait(1)
 vpnfixnow = false
-lowPD = {getColor(lowPowerD, 0)}
-spinC = {getColor(spinColG, 0)}
+lowPD = {getColor(lowPowerD, 1)}
+spinC = {getColor(spinColG, 1)}
 if not (climeNowOnly) then
     while (lowPD[1] == 102 or lowPD[1] == 254) do
         -- Vpn Fixing
@@ -48,14 +54,13 @@ if not (climeNowOnly) then
         -- timer end
     -----------------
         if timer:check() >= timerSET then
-            toast("Time is over. \nRuntime: " .. timer:check()/60 .. " minutes" .. version)
+            toast("Time is over. \nRuntime: " .. timer:check()/60 .. " minutes")
             break
         end
 
         -- Spinning
     -----------------
-        click(Location(752, 1704))
-        click(Location(752, 1704))
+        doubleClick(Location(752, 1704))
         wait(2)
         lowPD = {getColor(lowPowerD, 0)}
     end
@@ -68,7 +73,7 @@ end
         -- Clime Now
 -----------------
 if (ClimeNow) or (climeNowOnly) then
-    if LCheck:exists(Pattern("Low_W.png"), 0.4) or verifybtcapp:exists(Pattern("vRfy.png"), 0) then
+    if LCheck:exists(Pattern("Low_W.png"):similar(0.5), 0.4) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0) then
         toast("Try to clime Satoshi")
         click(Location(99, 136))
         click(Location(99, 136))
@@ -85,14 +90,14 @@ if (ClimeNow) or (climeNowOnly) then
                     toast("Wait for payment")
                 end
                 if climeSuc:exists(Pattern("climeSucZ.png"), 0) then
-                    toast("Clime Success! \nRuntime: " .. timer:check()/60 .. " minutes" .. version)
+                    toast("Clime Success! \nRuntime: " .. timer:check()/60 .. " minutes")
                     click(Location(993, 144))
                     click(Location(993, 144))
                     wait(1)
                 end
             end
         else
-            toast("Wait for 3 day. Then clime. \nRuntime: " .. timer:check()/60 .. " minutes" .. version)
+            toast("Wait for 3 day. Then clime. \nRuntime: " .. timer:check()/60 .. " minutes")
             click(Location(993, 144))
             click(Location(993, 144))
             wait(1)

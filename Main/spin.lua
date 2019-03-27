@@ -19,11 +19,11 @@ while waitfC[3] == 217 or waitfC[3] == 84 do
     waitfC = {getColor(waitForApp, 1)}
     -- toast("waitfC[3] = "..waitfC[3])
 end
-print(whoisapp.."="..bugs..","..waitfC[3])
+-- print(whoisapp.."="..bugs..","..waitfC[3])
     -- Vpn Fixing
 -----------------
 vpnPasswordRequ()
-wait(1)
+-- wait(1)
 vpnfixnow = false
 lowPD = {getColor(lowPowerD, 1)}
 spinC = {getColor(spinColG, 1)}
@@ -34,13 +34,13 @@ if not (climeNowOnly) then
         vpnPasswordRequ()
         -- Offer Check
     -----------------
-        if (offer) and offers == 0 then
-            if offer1:exists(Pattern("of_1.png"), 0) then
-                toast("Offer found")
-                click(Location(325, 1405))
-                offers = 1
-            end
-        end
+        -- if (offer) and offers == 0 then
+        --     if offer1:exists(Pattern("of_1.png"), 0) then
+        --         toast("Offer found")
+        --         click(Location(325, 1405))
+        --         offers = 1
+        --     end
+        -- end
     
         -- Location error Check
     -----------------

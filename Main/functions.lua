@@ -19,28 +19,38 @@ function vpnPasswordRequ()
 end
 
 function savebattery()
+	local wapdonen = preferenceGetNumber("wapdone", 0) 
 	if saveBartilvl > batteryLevel() then
 		batterylvls = batteryLevel() - saveBartilvl
 		preferencePutNumber("batteryinfopast", batterylvls)
+		setStopMessage(batterylvls.."% battery used.\n\t"..(wapdonen-startaPs).." apps are commpletd.".."\n\tTotal commpleted apps : "..wapdonen.."\nRuntime: " .. Gtimer:check()/60 .. " minutes") 
 	elseif saveBartilvl < batteryLevel() then
 		batterylvls = batteryLevel() - saveBartilvl
 		preferencePutNumber("batteryinfopast", batterylvls)
+		setStopMessage(batterylvls.."% battery used.\n\t"..(wapdonen-startaPs).." apps are commpletd.".."\n\tTotal commpleted apps : "..wapdonen.."\nRuntime: " .. Gtimer:check()/60 .. " minutes") 
 	elseif 15 >= batteryLevel() then
-		return scriptExit("Battery is low, less then 15%.")
+		return scriptExit("Battery is low, less then 15%.\n\t"..(wapdonen-startaPs).." apps are commpletd.".."\n\tTotal commpleted apps : "..wapdonen.."\nRuntime: " .. Gtimer:check()/60 .. " minutes") 
 	else
+		setStopMessage("0% battery used.\n\t"..(wapdonen-startaPs).." apps are commpletd.".."\n\tTotal commpleted apps : "..wapdonen.."\nRuntime: " .. Gtimer:check()/60 .. " minutes") 
 		preferencePutNumber("batteryinfopast", 0)
 	end
 end
 
 function testPicapp()
 	if (skp) then
-		brks = 1
-		while brks <= Nnew do
+		brks = (preferenceGetNumber("wapdone", 0)+1)
+		toast(#appPackesName)
+		-- for brks = 1, #appPackesName, 1 do
 			sxp = picapp(lognew[brks], brks)
 			lognew[brks] = sxp[1]
 			sxp[1] = 0
-			brks = brks + 1
-		end
+		-- end
+		-- while brks <= Nnew do
+		-- 	sxp = picapp(lognew[brks], brks)
+		-- 	lognew[brks] = sxp[1]
+		-- 	sxp[1] = 0
+		-- 	brks = brks + 1
+		-- end
 	end
 end
 
@@ -106,6 +116,7 @@ function picapp(a, n)
 		a = 1
 		skp = false
 	end
+	a = "0"
 	return {a}
 end
 

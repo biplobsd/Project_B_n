@@ -6,6 +6,7 @@
 
 --alpha build
 -- ========== Settings ================
+stopitnow = false
 
 -- Timer
 timerVpnfixing = Timer();
@@ -14,12 +15,12 @@ timerVpnfixing:set()
 -- ========== Function ================
 function Endscript()
     if timerVpnfixing:check() >= 900 then
-        scriptExit("Time is up. \nRuntime: " .. timer2:check()/60 .. " minutes")
+        scriptExit("Time is up. \nRuntime: " .. timerVpnfixing:check()/60 .. " minutes")
     end
 end
 
 function VConnectedC()
-    if connectingC:exists(Pattern("homeConnected.png"), 1) then
+    if connectingC:exists(Pattern("homeConnected.png"), 0.4) then
         toast("Connected")
         return true
     end
@@ -38,6 +39,7 @@ function chromeLoadingbar()
     waitPbar = 0
     while true do
         chromeloadingCo = {getColor(chromeLoading, 0)}
+        toast("chromeloadingCo[3] = "..chromeloadingCo[3])
         while (chromeloadingCo[3] == 232) and 20 >= waitPbar do
             wait(0.5)
             chromeloadingCo = {getColor(chromeLoading, 0)}
@@ -54,6 +56,39 @@ function chromeLoadingbar()
         end
     end
 end
+
+function sciweavers_orgHome()
+    if chromeAddressBar:exists(Pattern("sciweavers.orgHome.png"), 0) then
+        chromeLoadingbar()
+        click(Location(214, 327))
+        wait(1)
+        click(Location(136, 406))
+        wait(0.2)
+        ducumentsReg:existsClick(Pattern("documentMe.png"), 2)
+        wait(0.2)
+        click(Location(373, 335))
+        wait(0.2)
+        click(Location(861, 373))
+        wait(1)
+        click(Location(537, 621))
+        wait(1)
+        check_sciweaverProgres = 0 
+        while not sciweaversProg:exists(Pattern("sciweaverProgres.png"), 0) do
+            wait(0.8)
+            if check_sciweaverProgres >= 16 then break end
+            check_sciweaverProgres = check_sciweaverProgres + 1
+            toast(check_sciweaverProgres)
+        end
+        if check_sciweaverProgres == 16 then
+            swipe(Location(525, 539), Location(525, 1183))
+            chromeLoadingbar()
+            sciweavers_orgHome()
+        end
+        downloadtextfile:existsClick(Pattern("downloadfiletxt.png"), 0)
+        return
+    end
+end
+
 
 function pinrequc()
     Endscript()
@@ -72,25 +107,7 @@ function pinrequc()
         click(Location(875, 157))
         click(Location(445, 445))
     end
-    if chromeAddressBar:exists(Pattern("sciweavers.orgHome.png"), 0) then
-        chromeLoadingbar()
-        click(Location(214, 327))
-        wait(1)
-        click(Location(136, 406))
-        wait(0.2)
-        ducumentsReg:existsClick(Pattern("documentMe.png"), 2)
-        wait(0.2)
-        click(Location(373, 335))
-        wait(0.2)
-        click(Location(861, 373))
-        wait(1)
-        click(Location(537, 621))
-        wait(1)
-        while not sciweaversProg:exists(Pattern("sciweaverProgres.png"), 0) do
-            wait(0.8)
-        end
-        downloadtextfile:existsClick(Pattern("downloadfiletxt.png"), 0)
-    end
+    sciweavers_orgHome()
     if chromeAddressBar:exists(Pattern("sciweavers.org.png"), 1) then
         chromeLoadingbar()
         zoom(421, 537, 300, 537, 650, 537, 771, 537, 300)
@@ -126,10 +143,11 @@ end
 
 function connectingonoff()
     p = 0
-    while true do
+    for ctgnf = 0, 25, 1 do
+        if VConnectedC() then return true end
         if PinRequT:exists(Pattern("popupPin.png"), 0) then
             click(Location(287, 879))
-            return
+            return false
         elseif not VConnectedC() then
             toast("Not Connecting.\nTry to connecting.")
             click(Location(995, 321))
@@ -142,11 +160,12 @@ function connectingonoff()
         lCon = 0
         while connectingC:exists(Pattern("homeConnecting.png"), 0) and 20 >= lCon do
             wait(3)
-            if VConnectedC() then break end
+            if VConnectedC() then return true end
             lCon = lCon + 1
         end
-        if VConnectedC() then return end
     end
+    stopitnow = true
+    return false
 end
 
 function addingAddressbar()
@@ -156,6 +175,7 @@ function addingAddressbar()
         type("www.sciweavers.org/utils/i2img")
         click(Location(966, 1842))
         wait(4)
+        chromeLoadingbar()
         -- chromeloadingCo = {getColor(chromeLoading, 0)}
         -- toast(chromeloadingCo[3])
         -- while (chromeloadingCo[3] == 229) do
@@ -170,8 +190,22 @@ function addingAddressbar()
         type("www.freeopenvpn.org/logpass/usa.php")
         click(Location(966, 1842))
         wait(4)
+        chromeLoadingbar()
     end
 end
+
+function preloadedChrome()
+    if tabswichingshort:exists(Pattern("tabSwichingShut.png"), 1) then
+        toast("Preloaded address.")
+        click(Location(967, 842))
+        wait(0.2)
+        click(Location(253, 1337))
+        wait(0.2)
+        return true
+    end
+    return false
+end
+
 
 function maindo()
     while true do
@@ -182,9 +216,13 @@ function maindo()
             wait(3)
             toast("Starting Vpn Client Pro.")
         end
-        if VConnectedC() then break end
-        connectingonoff()
-        if VConnectedC() then break end
+        if connectingonoff() then
+            return
+        else
+            if stopitnow then
+                scriptExit("Maybe internet connectings problem. \nRuntime: " .. timerVpnfixing:check()/60 .. " minutes")
+            end
+        end
         -- Chrome 
         while not chromeC:exists(Pattern("chromeChecking.png"):similar(0.3), 0) do
             startApp("com.android.chrome")
@@ -192,13 +230,7 @@ function maindo()
             toast("Starting Chrome.")
         end
         if chromePlus:exists(Pattern("chromePlusimg.png"), 0) then
-            if tabswichingshort:exists(Pattern("tabSwichingShut.png"), 1) then
-                toast("Preloaded address")
-                click(Location(967, 842))
-                wait(0.2)
-                click(Location(253, 1337))
-                wait(0.2)
-            else
+            if not preloadedChrome() then
                 click(Location(993, 155))
                 click(Location(485, 450))
                 click(Location(84, 157))
@@ -206,13 +238,7 @@ function maindo()
             end
         else
             click(Location(875, 157))
-            if tabswichingshort:exists(Pattern("tabSwichingShut.png"), 1) then
-                toast("Preloaded address")
-                click(Location(967, 842))
-                wait(0.2)
-                click(Location(253, 1337))
-                wait(0.2)
-            else
+            if not preloadedChrome() then
                 click(Location(993, 155))
                 click(Location(485, 450))
                 click(Location(84, 157))

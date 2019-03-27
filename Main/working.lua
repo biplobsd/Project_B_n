@@ -5,17 +5,17 @@ while true do
         wait(0.5)
         toast("waiting")
     end
-    wait(1)
+    -- wait(1)
     if verifyviaapp:exists(Pattern("verifyViaappW.png"), 0.5) then
         oneTime = false
     else
         break
     end
-    wait(2)
+    -- wait(1)
     if homeBTCwA:exists(Pattern("HomeBTCWA.png"):similar(0.4), 1) then
         click(Location(197,447))
     end
-    wait(1)
+    -- wait(1)
     while waitX:exists(Pattern("wait_x.png"), 0) do
         wait(3)
         toast("Found wait_X. Waiting")
@@ -34,7 +34,7 @@ while true do
             click(Location(305, 867))
         end
     end
-    wait(3)
+    -- wait(3)
     if sendBtc:exists(Pattern("SendBTCc.png"):similar(0.4), 0) then
         click(Location(603, 457))
     end
@@ -52,14 +52,14 @@ while true do
         click(Location(512, 1584))
         wait(1)
     end
-    wait(2)
+    -- wait(2)
     contC = {getColor(conticol, 1)}
     -- toast(contC[3])
     while (contC[3] == 239) do
         wait(0.5)
         contC = {getColor(conticol, 0)}
     end
-    wait(2)
+    -- wait(2)
     if transD:exists(Pattern("transtiD.png"):similar(0.4), 1) then
         toast("found>>")
         click(Location(711, 1489))

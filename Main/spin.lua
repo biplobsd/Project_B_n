@@ -4,10 +4,6 @@ timer = Timer();
 wait(2)
 timer:set()
 waitfC = {getColor(waitForApp, 1)}
--- toast("waitfC[3] = "..waitfC[3])
-    -- Wait for app opening
------------------
--- or waitf:exists(Pattern("Wel_W.png"):similar(0.2), 0.4)
 while waitfC[3] == 217 or waitfC[3] == 84 do 
     wait(2)
     toast("Wait " .. timer:check() .. " sec")
@@ -17,11 +13,7 @@ while waitfC[3] == 217 or waitfC[3] == 84 do
         break
     end
     waitfC = {getColor(waitForApp, 1)}
-    -- toast("waitfC[3] = "..waitfC[3])
 end
--- print(whoisapp.."="..bugs..","..waitfC[3])
-    -- Vpn Fixing
------------------
 vpnPasswordRequ()
 -- wait(1)
 vpnfixnow = false
@@ -29,8 +21,6 @@ lowPD = {getColor(lowPowerD, 1)}
 spinC = {getColor(spinColG, 1)}
 if not (climeNowOnly) then
     while (lowPD[1] == 102 or lowPD[1] == 254) do
-        -- Vpn Fixing
-    -----------------
         vpnPasswordRequ()
         -- Offer Check
     -----------------
@@ -66,9 +56,7 @@ if not (climeNowOnly) then
     end
 end
 wait(0.1)
-if verifybtcapp:exists(Pattern("vRfy.png"), 0) then
-    oneTime = false
-end
+if verifybtcapp:exists(Pattern("vRfy.png"), 0) then oneTime = false end
 
         -- Clime Now
 -----------------

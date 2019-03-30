@@ -40,63 +40,18 @@ function testPicapp()
 	if (skp) then
 		brks = (preferenceGetNumber("wapdone", 0)+1)
 		toast(#appPackesName)
-		-- for brks = 1, #appPackesName, 1 do
-			sxp = picapp(lognew[brks], brks)
-			lognew[brks] = sxp[1]
-			sxp[1] = 0
-		-- end
-		-- while brks <= Nnew do
-		-- 	sxp = picapp(lognew[brks], brks)
-		-- 	lognew[brks] = sxp[1]
-		-- 	sxp[1] = 0
-		-- 	brks = brks + 1
-		-- end
+		sxp = picapp(lognew[brks], brks)
+		lognew[brks] = sxp[1]
+		sxp[1] = 0
 	end
 end
 
--- function swipeMod(n)
--- 	if (oneTime) then
--- 		if n <= 12 then
--- 			conti = 0
--- 		else
--- 			conti = ((n-1)/12)
--- 			contino = 1
--- 			while contino <= conti do
--- 				swipe(Location(555, 1545), Location(555,798))
--- 				wait(2.5)
--- 				contino = contino + 1
--- 			end
--- 		end
--- 		oneTime = false
--- 	else
--- 		oneTime = false
--- 		if n <= 12 then
--- 			r = 1
--- 		else
--- 			r = (n-1)%12
--- 		end
--- 		if r == 0 then
--- 			swipe(Location(555, 1545), Location(555,798))
--- 			wait(2.5)
--- 		end
--- 	end
--- end
-
 function advacesAppPic(op)
 	sop = 0
-	-- op = #appPackesName - op
 	whoisapp = op
 	-- wait(2)
 	aov = startApp(appPackesName[op])
-	-- toast(startApp(appPackesName[op]))
-	-- wait(3)
-	-- while not (waitf:exists(Pattern("Wel_W.png"):similar(0.5), 0.1) or verifyviaapp:exists(Pattern("verifyViaappW.png"):similar(0.5), 0.1) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0.1)) and (sop <= 30) do 
-	-- 	startApp(appPackesName[op])
-	-- 	wait(1)
-	-- 	sop = sop + 1
-	-- end
 	toast(op)
-	-- print(op.."="..sop)
 	wait(3)
 	if (aov or waitf:exists(Pattern("Wel_W.png"):similar(0.5), 0.1) or verifyviaapp:exists(Pattern("verifyViaappW.png"):similar(0.5), 0.1) or verifybtcapp:exists(Pattern("vRfy.png"):similar(0.5), 0.1)) then
 		appOped = true
@@ -119,22 +74,3 @@ function picapp(a, n)
 	a = "0"
 	return {a}
 end
-
--- function picappL(a)
--- 	x = (210*(a%3)*1.3)
--- 	if x == 0 then
--- 		x = 210*3*1.3
--- 	end
--- 	if (a/4)%3 == 0 then
--- 		y = 275*5
--- 	elseif (a/4)%3 >= 0.25  and (a/4)%3 <= 0.75 then
--- 		y = 275*2
--- 	elseif (a/4)%3 >= 1.0  and (a/4)%3 <= 1.5 then
--- 		y = 275*3
--- 	elseif (a/4)%3 >= 1.75  and (a/4)%3 <= 2.25 then
--- 		y = 275*4
--- 	elseif (a/4)%3 >= 2.5  and (a/4)%3 <= 2.75 then
--- 		y = 275*5
--- 	end
--- 	return Location(x, y)
--- end

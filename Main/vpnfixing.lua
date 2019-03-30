@@ -11,6 +11,7 @@ stopitnow = false
 -- Timer
 timerVpnfixing = Timer();
 timerVpnfixing:set()
+sicweA = 0
 
 -- ========== Function ================
 function Endscript()
@@ -66,12 +67,15 @@ function sciweavers_orgHome()
         wait(0.2)
         ducumentsReg:existsClick(Pattern("documentMe.png"), 2)
         wait(0.2)
-        click(Location(373, 335))
-        wait(0.2)
-        click(Location(861, 373))
+        ducumentsLoad:waitVanish(Pattern("docLoad.png"), 10)
+        ducumentsRecent:existsClick(Pattern("docRecent.png"):similar(0.4), 1)
+        -- click(Location(373, 335))
+        wait(1)
+        -- click(Location(861, 373))
+        ducumentsUsa:existsClick(Pattern("docUsa.png"):similar(0.4), 1)
         wait(1)
         click(Location(537, 621))
-        wait(1)
+        wait(0.5)
         check_sciweaverProgres = 0 
         while not sciweaversProg:exists(Pattern("sciweaverProgres.png"), 0) do
             wait(0.8)
@@ -80,7 +84,12 @@ function sciweavers_orgHome()
             toast(check_sciweaverProgres)
         end
         if check_sciweaverProgres == 16 then
-            swipe(Location(525, 539), Location(525, 1183))
+            if sicweA == 4 then
+                addingAddressbarSciw()
+            else
+                sicweA = sicweA + 1
+                swipe(Location(525, 539), Location(525, 1183))
+            end
             chromeLoadingbar()
             sciweavers_orgHome()
         end
@@ -145,8 +154,7 @@ function connectingonoff()
     p = 0
     for ctgnf = 0, 25, 1 do
         if VConnectedC() then return true end
-        if PinRequT:exists(Pattern("popupPin.png"), 0) then
-            click(Location(287, 879))
+        if passwordRequP:existsClick(Pattern("disconnectimg.png"):similar(0.4), 0) then
             return false
         elseif not VConnectedC() then
             toast("Not Connecting.\nTry to connecting.")
@@ -168,7 +176,7 @@ function connectingonoff()
     return false
 end
 
-function addingAddressbar()
+function addingAddressbarSciw()
     if webchromeH:exists(Pattern("webchromeHome.png"), 0) then
         click(Location(414, 766))
         wait(0.2)
@@ -182,6 +190,9 @@ function addingAddressbar()
         --     wait(0.5)
         -- end
     end
+end
+
+function addingAddressbarVpn()
     if chromeC:exists(Pattern("chromeChecking.png"), 0) then
         click(Location(875, 157))
         click(Location(84, 157))
@@ -192,6 +203,11 @@ function addingAddressbar()
         wait(4)
         chromeLoadingbar()
     end
+end
+
+function addingAddressbar()
+    addingAddressbarSciw()
+    addingAddressbarVpn()
 end
 
 function preloadedChrome()

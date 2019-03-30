@@ -17,6 +17,8 @@ require 'functions'
 Gtimer = Timer();
 Gtimer:set()
 saveBartilvl = batteryLevel()
+lognew = {}
+preferencePutNumber("totalBatteryUse", (preferenceGetNumber("totalBatteryUse", 0) + (-1*preferenceGetNumber("batteryinfopast", 0))))
 
 -- User Interface
 preferencePutNumber("Nnew", #appPackesNameBTC)
@@ -50,9 +52,12 @@ addRadioGroup("modeChange", 1)
 addRadioButton("Spinner", 1)
 addRadioButton("Sum money", 2)
 newRow()
+addTextView("\tComplated apps : ")
+addEditNumber("wapdone", 0)
+newRow()
 addTextView("\tYour total "..preferenceGetNumber("Nnew", 0).." apps")
 newRow()
-addTextView("\t"..preferenceGetNumber("wapdone", 0).." app are complated.")
+addTextView("\tTotal battery used "..preferenceGetNumber("totalBatteryUse", 0).."%")
 newRow()
 addTextView("\tPast session battery used "..preferenceGetNumber("batteryinfopast", 0).."%")
 dialogShow("Setup")
@@ -77,61 +82,23 @@ if (modeChange == 2) then
 	newRow()
 	addTextView("\t"..preferenceGetNumber("wapdone", 0).." app are complated.")
 	dialogShow("Setup")
-	toast("Your email: "..emailInit.."\nYour total apps: "..Nnew)
+	toast("Your email: "..emailInit.."\nYour total apps: "..preferenceGetNumber("Nnew", 0))
 	appPackesName = appPackesNameVia
 else 
 	appPackesName = appPackesNameBTC
 end
-if (reverse) then
-	appPackesName = reverseTB(appPackesName)
-end
-timerSET = timerSET * 60
-lognew = {}
+if (reverse) then appPackesName = reverseTB(appPackesName) end
 if (rsValue) then
-	-- count = 1
-	-- while Nnew >= count do
-	-- 	lognew[count] = "0"
-	-- 	count = count + 1
-	-- end
-	
-	-- if (modeChange == 1) then
-	-- 	log_filenew = assert(io.open(dir .. "logfilenew1.txt", "w"))
-	-- else
-	-- 	log_filenew = assert(io.open(dir .. "logfilenew2.txt", "w"))
-	-- end
-	-- for k,v in pairs(lognew) do
-	-- 	log_filenew:write(v.."\n")
-	-- end
-	-- io.close(log_filenew)
 
-	-- New Memory system
 	for nameID = 1, #appPackesName, 1 do
-		-- preferencePutString(string.format("%dID%d", modeChange, nameID), "0")
 		preferencePutString(modeChange.."ID"..nameID, "0")
 		lognew[nameID] = "0"
 	end
 	preferencePutNumber("wapdone", 0)
 else
 	-- Read Previous actions
-	-- needED = 0
-	-- if (modeChange == 1) then
-	-- 	log_filenew = assert(io.lines(dir .. "logfilenew1.txt", "r"))
-	-- else
-	-- 	log_filenew = assert(io.lines(dir .. "logfilenew2.txt", "r"))
-	-- end
-	-- for l in log_filenew do
-	-- 	local p = l:match '(%S+)'
-	-- 	table.insert(lognew, p)
-	-- 	if p == "1" then
-	-- 		needED = needED + 1
-	-- 	end
-	-- end
-	-- New memory method
 	for nameID = (preferenceGetNumber("wapdone", 0)+1), #appPackesName, 1 do
 		lognew[nameID] = preferenceGetString(modeChange.."ID"..nameID, "0")
-		-- if lognew[nameID] == "1" then
-		-- 	needED = needED + 1
-		-- end
 	end
 	
 	toast(preferenceGetNumber("wapdone", 0).." app are complated")
@@ -144,16 +111,13 @@ oneTime = true
 appOped = false
 skp = true
 startaPs = preferenceGetNumber("wapdone", 0)
+timerSET = timerSET * 60
 
 -- ========== Main Program ================
 
--- savebattery()
-
+savebattery()
 if (brNess) then setBrightness(0) end
-
-if (vpnfixingS) then
-	dofile(dir .. "vpnfixing.lua")
-end
+if (vpnfixingS) then dofile(dir .. "vpnfixing.lua") end
 while true do
 	if (modeChange == 1) then
 		if not appOped then
@@ -180,36 +144,20 @@ while true do
 		toast("App switch")
 		killApp(appPackesName[whoisapp])
 		-- wait(1)
-		-- Save logs
-		-- if (modeChange == 1) then
-		-- 	log_filenew = assert(io.open(dir .. "logfilenew1.txt", "w"))
-		-- else
-		-- 	log_filenew = assert(io.open(dir .. "logfilenew2.txt", "w"))
-		-- end
-		-- for k,v in pairs(lognew) do
-		-- 	log_filenew:write(v.."\n")
-		-- end
-		-- io.close(log_filenew)
-		
-		-- New Memory system
-		-- string.format("%dID%d", modeChange, whoisapp)
+		-- Save actions
 		preferencePutNumber("wapdone", whoisapp)
 		preferencePutString(modeChange.."ID"..whoisapp, lognew[whoisapp].."")
-
 		savebattery()
 	end
 
 	if (vpnfixnow) then dofile(dir .. "vpnfixing.lua") end
 	
-	-- Pic right app
+	-- Picapp
 	skp = true
-
-		    -- Vpn Fixing
------------------
 	vpnPasswordRequ()
-
 	testPicapp()
 
+	-- Check is it right place
 	if not appOped then
 		if (skp) then
 			toast("Trying reset ...")
@@ -217,32 +165,12 @@ while true do
 			scriptExit("It's not btc app lists.\nRuntime: " .. Gtimer:check()/60 .. " minutes")
 		end
 	end
-
 	if (skp) then
-		-- Reset log file
-		-- count = 1
-		-- while Nnew >= count do
-		-- 	lognew[count] = "0"
-		-- 	count = count + 1
-		-- end
-		-- if (modeChange == 1) then
-		-- 	log_filenew = assert(io.open(dir .. "logfilenew1.txt", "w"))
-		-- else
-		-- 	log_filenew = assert(io.open(dir .. "logfilenew2.txt", "w"))
-		-- end
-		-- for k,v in pairs(lognew) do
-		-- 	log_filenew:write(v.."\n")
-		-- end
-		-- io.close(log_filenew)
-		
-		-- New memory method
 		for nameID = 1, #appPackesName, 1 do
 			preferencePutString(modeChange.."ID"..nameID, "0")
 		end
 		preferencePutNumber("wapdone", 0)
+		preferencePutNumber("totalBatteryUse", 0)
 		scriptExit("All done and Reset log file.\nRuntime: " .. Gtimer:check()/60 .. " minutes")
 	end
-
-	--
-	-- savebattery()
 end

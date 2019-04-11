@@ -12,6 +12,8 @@ stopitnow = false
 timerVpnfixing = Timer();
 timerVpnfixing:set()
 sicweA = 0
+sVpin = {}
+pNum = true
 
 -- ========== Function ================
 function Endscript()
@@ -59,13 +61,13 @@ function chromeLoadingbar()
 end
 
 function sciweavers_orgHome()
-    if chromeAddressBar:exists(Pattern("sciweavers.orgHome.png"), 0) then
+    if chromeAddressBar:exists(Pattern("sciweavers.orgHome.png"):similar(0.4), 0) then
         chromeLoadingbar()
         click(Location(214, 327))
         wait(1)
         click(Location(136, 406))
         wait(0.2)
-        ducumentsReg:existsClick(Pattern("documentMe.png"), 2)
+        ducumentsReg:existsClick(Pattern("documentMe.png"):similar(0.6), 2)
         wait(0.2)
         ducumentsLoad:waitVanish(Pattern("docLoad.png"), 10)
         ducumentsRecent:existsClick(Pattern("docRecent.png"):similar(0.4), 1)
@@ -101,7 +103,8 @@ end
 
 function pinrequc()
     Endscript()
-    if chromeAddressBar:exists(Pattern("freeopenvpn.org.png"), 0) then
+    toast("now")
+    if chromeAddressBar:exists(Pattern("freeopenvpn.org.png"):similar(0.4), 0) then
         swipe(Location(525, 539), Location(525, 1183))
         chromeLoadingbar()
         if cepbepy:exists(Pattern("cepbepyimg.png"), 0) then
@@ -109,7 +112,7 @@ function pinrequc()
         else
             longClick(Location(311, 876), 1)
         end
-        chromeDownloadImg:existsClick(Pattern("downIMG.png"), 2)
+        chromeDownloadImg:existsClick(Pattern("downIMG.png"):similar(0.4), 2)
         if chromeDownloadAgain:exists(Pattern("downloadAgain.png"), 0) then
             click(Location(873, 1817))
         end
@@ -117,7 +120,7 @@ function pinrequc()
         click(Location(445, 445))
     end
     sciweavers_orgHome()
-    if chromeAddressBar:exists(Pattern("sciweavers.org.png"), 1) then
+    if chromeAddressBar:exists(Pattern("sciweavers.org.png"):similar(0.4), 1) then
         chromeLoadingbar()
         zoom(421, 537, 300, 537, 650, 537, 771, 537, 300)
         zoom(421, 537, 300, 537, 650, 537, 771, 537, 300)
@@ -137,6 +140,7 @@ function pinrequc()
             toast("found 8 digit\nadding first 0")
             pinnumber = 0 .. pinnumber
             pinnumber = string.match(pinnumber, "%d%d%d%d%d%d%d%d%d")
+
             return pinnumber
         else
             click(Location(875, 157))
@@ -227,9 +231,10 @@ function maindo()
     while true do
         Endscript() 
         -- VpnClientPro
+        startApp("it.colucciweb.vpnclient")
         while not vpnClientProC:exists(Pattern("appVPNCproC.png"):similar(0.5), 0) do
-            startApp("it.colucciweb.vpnclient")
-            wait(3)
+            
+            wait(1.4)
             toast("Starting Vpn Client Pro.")
         end
         if connectingonoff() then
@@ -240,9 +245,10 @@ function maindo()
             end
         end
         -- Chrome 
+        startApp("com.android.chrome")
         while not chromeC:exists(Pattern("chromeChecking.png"):similar(0.3), 0) do
-            startApp("com.android.chrome")
-            wait(3)
+            
+            wait(1.4)
             toast("Starting Chrome.")
         end
         if chromePlus:exists(Pattern("chromePlusimg.png"), 0) then
@@ -264,10 +270,18 @@ function maindo()
         --]]
         -- Main Trying
         pinrequc()
-        if pinnumber == nil then maindo() end
+        for k,v in pairs(sVpin) do
+            toast(v.displayName)
+            if v.displayName == pinnumber then
+                pNum = false
+                break
+            end
+        end
+        if pinnumber == nil or pNum == false then maindo() end
+        startApp("it.colucciweb.vpnclient")
         while not vpnClientProC:exists(Pattern("appVPNCproC.png"), 0) do
-            startApp("it.colucciweb.vpnclient")
-            wait(3)
+            
+            wait(1.4)
             toast("Starting Vpn Client Pro.")
         end
         if vpnClientProC:exists(Pattern("appVPNCproC.png"), 0) then
@@ -283,6 +297,7 @@ function maindo()
             click(Location(871, 165))
             wait(0.4)
             keyevent(4)
+            sVpin[#sVpin+1] = pinnumber
         end
     end
 end
